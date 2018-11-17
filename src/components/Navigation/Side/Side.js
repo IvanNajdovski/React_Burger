@@ -19,7 +19,7 @@ const side = (props) => {
         <div className={Aclasses.join(" ")}>
             <Logo height="11%"/>
             <nav>
-                <NavigationItems/>
+                <NavigationItems isAuthenticated={props.isAuth}/>
             </nav>
         </div>
         </Auxiliary>
