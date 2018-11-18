@@ -21,7 +21,7 @@ const buildContorls = (props) => (
         ))}
         <button className={classes.OrderButton}
             disabled={!props.purchasable}
-            onClick={props.ordered}>ORDER NOW</button>
+            onClick={props.ordered}>{ props.isAuth ? 'ORDER NOW' : 'PLEASE SING UP'}</button>
     </div>
 );
 
