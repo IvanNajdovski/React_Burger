@@ -1,5 +1,6 @@
 import React , { Component } from 'react';
 import { connect } from 'react-redux';
+import { checkValidation } from '../../../shared/validation';
 
 
 
@@ -10,6 +11,7 @@ import axios from '../../../axios-orders';
 import Input from '../../../components/UI/Input/Input';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import * as actions from '../../../store/actions/index';
+import { updateObject } from '../../../shared/utility';
 
 class ContactData extends Component {
     state = {
@@ -79,8 +81,8 @@ class ContactData extends Component {
                 value: "",
                 validation:{
                     required: true,
-                    minLenght: 3,
-                    maxLenght: 5
+                    isEmail: true
+
                 },
                 valid: false,
                 touched: false
@@ -120,41 +122,23 @@ class ContactData extends Component {
 
 }
 
-    checkValidation(value, rules){
-        let isValid = true;
 
-        if(rules.required){
-            isValid = value.trim() !== "" && isValid;
-        }
-        if(rules.minLenght){
-            isValid = value.length >= rules.minLenght && isValid;
-        }
-        if(rules.maxLenght){
-            isValid = value.length <= rules.maxLenght && isValid;
-        }
-        if(rules.isEmail){
-            const pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            isValid = pattern.test(value) && isValid
-        }
-        return isValid;
-}
     inputChangedHandler = (event, inputID) => {
-        const updatedOrderForm = {
-            ...this.state.orderForm
-        };
-        const updatedFormElement = {
-            ...updatedOrderForm[inputID]
-        };
-        updatedFormElement.value = event.target.value;
-        updatedFormElement.valid = this.checkValidation(updatedFormElement.value, updatedFormElement.validation)
-        updatedFormElement.touched = true;
+
+        const updatedFormElement = updateObject(this.state.orderForm[inputID], {
+                value: event.target.value,
+                valid: checkValidation(event.target.value, this.state.orderForm[inputID].validation),
+                touched: true
+
+        });
+        const updatedOrderForm = updateObject(this.state.orderForm, {
+            [inputID]: updatedFormElement
+        });
 
         let formIsValid = true;
         for(let item in updatedOrderForm){
             formIsValid = updatedOrderForm[item].valid && formIsValid
         }
-        updatedOrderForm[inputID] = updatedFormElement;
-
         this.setState({orderForm: updatedOrderForm, formIsValid: formIsValid})
 }
 

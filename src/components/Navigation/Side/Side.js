@@ -16,7 +16,7 @@ const side = (props) => {
     return (
         <Auxiliary>
         <Backdrop show={props.open} clicked={props.closed}/>
-        <div className={Aclasses.join(" ")}>
+        <div className={Aclasses.join(" ")} onClick={props.closed}>
             <Logo height="11%"/>
             <nav>
                 <NavigationItems isAuthenticated={props.isAuth}/>

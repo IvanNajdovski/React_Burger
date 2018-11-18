@@ -74,7 +74,7 @@ export const fetchOrders = (token, userId) => {
                     ...res.data[item],
                 id: item
         })
-            console.log("NewOrders are", ordersNew)
+
         }
         dispatch(fetchOrdersSuccess(ordersNew))
 
