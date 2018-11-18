@@ -12,7 +12,7 @@ import axios from '../../axios-orders';
 
 
 
-export class BurgerBuilder extends Component{
+class BurgerBuilder extends Component{
     state = {
         purchasable : false,
         purchasing: false,
